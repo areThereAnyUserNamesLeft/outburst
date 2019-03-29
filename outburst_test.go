@@ -4,7 +4,6 @@ import "testing"
 
 func buildTest(t *testing.T) {
 	ob := NewOutBurst()
-
 	if ob.Conf.Vulgar == nil {
 		t.Errorf("Vulgar not initialized")
 	}
@@ -20,4 +19,9 @@ func buildTest(t *testing.T) {
 	if ob.Conf.Padding == nil {
 		t.Errorf("Padding not initialized")
 	}
+}
+
+func outTest(t *testing.T) {
+	ob := NewOutBurst()
+	ob.Out(Knots{"Scooby Doo": "Dog", "Age": 4})
 }

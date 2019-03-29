@@ -18,7 +18,6 @@ type confSettings struct {
 }
 
 func readSettings() confSettings {
-
 	f, err := os.Open(file)
 	if err != nil {
 		fmt.Printf("No %s file found! Please start by saving the %s file in you project directory - (an empty %s file will supress this message and use default behaviour.\n)", file, file, file)
@@ -50,9 +49,7 @@ func readSettings() confSettings {
 	if s.Padding == nil {
 		s.Padding = &four
 	}
-
 	return s
-
 }
 
 type outburst struct {

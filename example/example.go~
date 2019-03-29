@@ -1,0 +1,12 @@
+package main
+
+import (
+	"github.com/areThereAnyUserNamesLeft/outburst"
+)
+
+func main() {
+
+	ob := outburst.NewOutBurst()
+	ob.Out(Knots{"Scooby Doo": "Dog", "Age": 4}).Burst()
+
+}
