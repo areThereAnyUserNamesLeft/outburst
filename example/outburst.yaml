@@ -1,5 +1,6 @@
 debug:  true
 vulgar: true
 emojis: true
-time_format: ""
 padding: true
+default_level: 2
+emoji_choice: "nautical"

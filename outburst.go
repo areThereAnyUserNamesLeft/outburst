@@ -10,11 +10,13 @@ import (
 const file = "outburst.yaml"
 
 type confSettings struct {
-	Debug      *bool  `yaml:"debug,omitempty"`
-	Vulgar     *bool  `yaml:"vulgar,omitempty"`
-	Emojis     *bool  `yaml:"emojis,omitempty"`
-	TimeFormat string `yaml:"time_format"`
-	Padding    *int   `yaml:"paddingi,omitempty"`
+	Debug       *bool   `yaml:"debug,omitempty"`
+	DefaultLvl  *Level  `yaml:"default_level"`
+	Vulgar      *bool   `yaml:"vulgar,omitempty"`
+	Emojis      *bool   `yaml:"emojis,omitempty"`
+	EmojiChoice *string `yaml:"emoji_choice,omitempty"`
+	TimeFormat  string  `yaml:"time_format"`
+	Padding     *int    `yaml:"padding,omitempty"`
 }
 
 func readSettings() confSettings {
@@ -38,6 +40,10 @@ func readSettings() confSettings {
 	}
 	if s.Debug == nil {
 		s.Debug = &False
+	}
+	if s.DefaultLvl == nil {
+		info := Info
+		s.DefaultLvl = &info
 	}
 	if s.Emojis == nil {
 		s.Emojis = &False

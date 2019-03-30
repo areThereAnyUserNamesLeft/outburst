@@ -7,6 +7,7 @@ import (
 func main() {
 
 	log := ob.NewOutBurst()
-	log.Out(ob.Knot{"Scooby Doo": "Dog", "Age": 4}).Burst(3)
+	log.Warn(ob.Knot{"Scooby Doo": "Dog", "Age": 4})
 
+	log.Out(ob.Knot{"Scooby Doo": "Dog", "Age": 4}).Burst(2)
 }
