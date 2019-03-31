@@ -1,0 +1,5 @@
+package outburst
+
+import "github.com/fatih/color"
+
+var colors =  []func(string)
