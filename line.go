@@ -129,3 +129,15 @@ func (o outburst) Panic(knots map[string]interface{}) {
 	l = Line{Knots: knots, Time: time.Now().Format(o.Conf.TimeFormat), Level: Panic, EmojiChoice: *o.Conf.EmojiChoice, Emoji: emojis[*o.Conf.EmojiChoice][*o.Conf.DefaultLvl], Color: colors["Panic"]}
 	l.Burst(Panic)
 }
+
+func (o outburst) ErrCheck(err error, knots ...map[string]interface{}) {
+	if err != nil {
+		o.Error(Knot{"Error": err})
+		if len(knots) > 0 {
+			for _, kn := range knots {
+				o.Error(kn)
+			}
+		}
+
+	}
+}

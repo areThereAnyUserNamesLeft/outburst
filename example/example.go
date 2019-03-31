@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	ob "github.com/areThereAnyUserNamesLeft/outburst"
 )
 
@@ -14,6 +15,6 @@ func main() {
 	log.Warn(ob.Knot{"Scooby Doo": "Dog", "Age": 4})
 	log.ErrCheck(nil)
 	err := fmt.Errorf("No scooby snax left!")
-	log.ErrCheck(Err)
+	log.ErrCheck(err)
 
 }
