@@ -34,15 +34,16 @@ type Line struct {
 	EmojiChoice string
 	Emoji       string
 	Color       *color.Color
+	File        string
 }
 
 // Out takes a map of string interface and returns a Line
 func (o outburst) Out(knots map[string]interface{}) Line {
 	lev := *o.Conf.DefaultLvl
 	if !*o.Conf.Emojis {
-		return Line{Knots: knots, Time: time.Now().Format(o.Conf.TimeFormat), Level: lev, EmojiChoice: *o.Conf.EmojiChoice, Emoji: "", Color: colors[lev.String()]}
+		return Line{Knots: knots, Time: time.Now().Format(o.Conf.TimeFormat), Level: lev, EmojiChoice: *o.Conf.EmojiChoice, Emoji: "", Color: colors[lev.String()], File: o.Conf.LogFile}
 	}
-	return Line{Knots: knots, Time: time.Now().Format(o.Conf.TimeFormat), Level: lev, EmojiChoice: *o.Conf.EmojiChoice, Emoji: emojis[*o.Conf.EmojiChoice][lev], Color: colors[lev.String()]}
+	return Line{Knots: knots, Time: time.Now().Format(o.Conf.TimeFormat), Level: lev, EmojiChoice: *o.Conf.EmojiChoice, Emoji: emojis[*o.Conf.EmojiChoice][lev], Color: colors[lev.String()], File: o.Conf.LogFile}
 }
 
 // Burst takes a map of string interface and returns a logging line
@@ -50,6 +51,10 @@ func (l Line) Burst(lvl Level) {
 	str := fmt.Sprintf("%s %s %s ", l.Level.String(), l.Time, emojis[l.EmojiChoice][lvl])
 	for k, v := range l.Knots {
 		str = str + fmt.Sprintf(" -  %s:%v", k, v)
+	}
+
+	if (l.File != "" && lvl >= l.Level) || (l.File != "" && l.Level.String() == "Error") {
+		l.writelog(str)
 	}
 	l.Color.Println(str)
 }

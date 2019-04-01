@@ -1,6 +1,7 @@
 debug:  true
 vulgar: true
 emojis: true
-padding: true
+padding: 4
 default_level: 2
 emoji_choice: "nautical"
+file: "/home/rich/logfile.txt"
