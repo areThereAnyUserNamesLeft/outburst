@@ -10,13 +10,13 @@ type Level int
 
 const (
 	falseVal       = false
-	Trace    Level = 0
-	Debug    Level = 1
-	Info     Level = 2
-	Warn     Level = 3
-	Error    Level = 4
-	Fatal    Level = 5
-	Panic    Level = 6
+	Trace    Level = iota
+	Debug
+	Info
+	Warn
+	Error
+	Fatal
+	Panic
 )
 
 func (l Level) String() string {
@@ -53,7 +53,7 @@ func (l Line) Burst(lvl Level) {
 		str = str + fmt.Sprintf(" -  %s:%v", k, v)
 	}
 
-	if (l.File != "" && lvl >= l.Level) || (l.File != "" && l.Level.String() == "Error") {
+	if (l.File != "" && lvl <= l.Level) || (l.File != "" && l.Level.String() == "Error") {
 		l.writelog(str)
 	}
 	l.Color.Println(str)
@@ -62,76 +62,76 @@ func (l Line) Burst(lvl Level) {
 func (o outburst) Trace(knots map[string]interface{}) {
 	l := Line{}
 	if !*o.Conf.Emojis {
-		l = Line{Knots: knots, Time: time.Now().Format(o.Conf.TimeFormat), Level: Trace, EmojiChoice: *o.Conf.EmojiChoice, Emoji: "", Color: colors["Trace"]}
+		l = Line{Knots: knots, Time: time.Now().Format(o.Conf.TimeFormat), Level: Trace, EmojiChoice: *o.Conf.EmojiChoice, Emoji: "", Color: colors["Trace"], File: o.Conf.LogFile}
 		l.Burst(Info)
 		return
 	}
-	l = Line{Knots: knots, Time: time.Now().Format(o.Conf.TimeFormat), Level: Trace, EmojiChoice: *o.Conf.EmojiChoice, Emoji: emojis[*o.Conf.EmojiChoice][*o.Conf.DefaultLvl], Color: colors["Trace"]}
+	l = Line{Knots: knots, Time: time.Now().Format(o.Conf.TimeFormat), Level: Trace, EmojiChoice: *o.Conf.EmojiChoice, Emoji: emojis[*o.Conf.EmojiChoice][*o.Conf.DefaultLvl], Color: colors["Trace"], File: o.Conf.LogFile}
 	l.Burst(Info)
 }
 func (o outburst) Info(knots map[string]interface{}) {
 	l := Line{}
 	if !*o.Conf.Emojis {
-		l = Line{Knots: knots, Time: time.Now().Format(o.Conf.TimeFormat), Level: Info, EmojiChoice: *o.Conf.EmojiChoice, Emoji: "", Color: colors["Info"]}
+		l = Line{Knots: knots, Time: time.Now().Format(o.Conf.TimeFormat), Level: Info, EmojiChoice: *o.Conf.EmojiChoice, Emoji: "", Color: colors["Info"], File: o.Conf.LogFile}
 		l.Burst(Info)
 		return
 	}
-	l = Line{Knots: knots, Time: time.Now().Format(o.Conf.TimeFormat), Level: Info, EmojiChoice: *o.Conf.EmojiChoice, Emoji: emojis[*o.Conf.EmojiChoice][*o.Conf.DefaultLvl], Color: colors["Info"]}
+	l = Line{Knots: knots, Time: time.Now().Format(o.Conf.TimeFormat), Level: Info, EmojiChoice: *o.Conf.EmojiChoice, Emoji: emojis[*o.Conf.EmojiChoice][*o.Conf.DefaultLvl], Color: colors["Info"], File: o.Conf.LogFile}
 	l.Burst(Info)
 }
 
 func (o outburst) Debug(knots map[string]interface{}) {
 	l := Line{}
 	if !*o.Conf.Emojis {
-		l = Line{Knots: knots, Time: time.Now().Format(o.Conf.TimeFormat), Level: Debug, EmojiChoice: *o.Conf.EmojiChoice, Emoji: "", Color: colors["Debug"]}
+		l = Line{Knots: knots, Time: time.Now().Format(o.Conf.TimeFormat), Level: Debug, EmojiChoice: *o.Conf.EmojiChoice, Emoji: "", Color: colors["Debug"], File: o.Conf.LogFile}
 		l.Burst(Debug)
 		return
 	}
-	l = Line{Knots: knots, Time: time.Now().Format(o.Conf.TimeFormat), Level: Debug, EmojiChoice: *o.Conf.EmojiChoice, Emoji: emojis[*o.Conf.EmojiChoice][*o.Conf.DefaultLvl], Color: colors["Debug"]}
+	l = Line{Knots: knots, Time: time.Now().Format(o.Conf.TimeFormat), Level: Debug, EmojiChoice: *o.Conf.EmojiChoice, Emoji: emojis[*o.Conf.EmojiChoice][*o.Conf.DefaultLvl], Color: colors["Debug"], File: o.Conf.LogFile}
 	l.Burst(Debug)
 }
 
 func (o outburst) Warn(knots map[string]interface{}) {
 	l := Line{}
 	if !*o.Conf.Emojis {
-		l = Line{Knots: knots, Time: time.Now().Format(o.Conf.TimeFormat), Level: Warn, EmojiChoice: *o.Conf.EmojiChoice, Emoji: "", Color: colors["Warn"]}
+		l = Line{Knots: knots, Time: time.Now().Format(o.Conf.TimeFormat), Level: Warn, EmojiChoice: *o.Conf.EmojiChoice, Emoji: "", Color: colors["Warn"], File: o.Conf.LogFile}
 		l.Burst(Warn)
 		return
 	}
-	l = Line{Knots: knots, Time: time.Now().Format(o.Conf.TimeFormat), Level: Warn, EmojiChoice: *o.Conf.EmojiChoice, Emoji: emojis[*o.Conf.EmojiChoice][*o.Conf.DefaultLvl], Color: colors["Warn"]}
+	l = Line{Knots: knots, Time: time.Now().Format(o.Conf.TimeFormat), Level: Warn, EmojiChoice: *o.Conf.EmojiChoice, Emoji: emojis[*o.Conf.EmojiChoice][*o.Conf.DefaultLvl], Color: colors["Warn"], File: o.Conf.LogFile}
 	l.Burst(Warn)
 }
 
 func (o outburst) Error(knots map[string]interface{}) {
 	l := Line{}
 	if !*o.Conf.Emojis {
-		l = Line{Knots: knots, Time: time.Now().Format(o.Conf.TimeFormat), Level: Error, EmojiChoice: *o.Conf.EmojiChoice, Emoji: "", Color: colors["Error"]}
+		l = Line{Knots: knots, Time: time.Now().Format(o.Conf.TimeFormat), Level: Error, EmojiChoice: *o.Conf.EmojiChoice, Emoji: "", Color: colors["Error"], File: o.Conf.LogFile}
 		l.Burst(Error)
 		return
 	}
-	l = Line{Knots: knots, Time: time.Now().Format(o.Conf.TimeFormat), Level: Error, EmojiChoice: *o.Conf.EmojiChoice, Emoji: emojis[*o.Conf.EmojiChoice][*o.Conf.DefaultLvl], Color: colors["Error"]}
+	l = Line{Knots: knots, Time: time.Now().Format(o.Conf.TimeFormat), Level: Error, EmojiChoice: *o.Conf.EmojiChoice, Emoji: emojis[*o.Conf.EmojiChoice][*o.Conf.DefaultLvl], Color: colors["Error"], File: o.Conf.LogFile}
 	l.Burst(Error)
 }
 
 func (o outburst) Fatal(knots map[string]interface{}) {
 	l := Line{}
 	if !*o.Conf.Emojis {
-		l = Line{Knots: knots, Time: time.Now().Format(o.Conf.TimeFormat), Level: Fatal, EmojiChoice: *o.Conf.EmojiChoice, Emoji: "", Color: colors["Fatal"]}
+		l = Line{Knots: knots, Time: time.Now().Format(o.Conf.TimeFormat), Level: Fatal, EmojiChoice: *o.Conf.EmojiChoice, Emoji: "", Color: colors["Fatal"], File: o.Conf.LogFile}
 		l.Burst(Fatal)
 		return
 	}
-	l = Line{Knots: knots, Time: time.Now().Format(o.Conf.TimeFormat), Level: Fatal, EmojiChoice: *o.Conf.EmojiChoice, Emoji: emojis[*o.Conf.EmojiChoice][*o.Conf.DefaultLvl], Color: colors["Fatal"]}
+	l = Line{Knots: knots, Time: time.Now().Format(o.Conf.TimeFormat), Level: Fatal, EmojiChoice: *o.Conf.EmojiChoice, Emoji: emojis[*o.Conf.EmojiChoice][*o.Conf.DefaultLvl], Color: colors["Fatal"], File: o.Conf.LogFile}
 	l.Burst(Fatal)
 }
 
 func (o outburst) Panic(knots map[string]interface{}) {
 	l := Line{}
 	if !*o.Conf.Emojis {
-		l = Line{Knots: knots, Time: time.Now().Format(o.Conf.TimeFormat), Level: Panic, EmojiChoice: *o.Conf.EmojiChoice, Emoji: "", Color: colors["Panic"]}
+		l = Line{Knots: knots, Time: time.Now().Format(o.Conf.TimeFormat), Level: Panic, EmojiChoice: *o.Conf.EmojiChoice, Emoji: "", Color: colors["Panic"], File: o.Conf.LogFile}
 		l.Burst(Panic)
 		return
 	}
-	l = Line{Knots: knots, Time: time.Now().Format(o.Conf.TimeFormat), Level: Panic, EmojiChoice: *o.Conf.EmojiChoice, Emoji: emojis[*o.Conf.EmojiChoice][*o.Conf.DefaultLvl], Color: colors["Panic"]}
+	l = Line{Knots: knots, Time: time.Now().Format(o.Conf.TimeFormat), Level: Panic, EmojiChoice: *o.Conf.EmojiChoice, Emoji: emojis[*o.Conf.EmojiChoice][*o.Conf.DefaultLvl], Color: colors["Panic"], File: o.Conf.LogFile}
 	l.Burst(Panic)
 }
 

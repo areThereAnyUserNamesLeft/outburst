@@ -7,7 +7,7 @@ import (
 )
 
 func (l Line) writelog(logText ...string) {
-	f, err := os.OpenFile(l.File, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	f, err := os.OpenFile(l.File, os.O_APPEND|os.O_CREATE|os.O_RDWR, 0666)
 	if err != nil {
 		fmt.Println("Could not create to logfile Error: ", err)
 	}
@@ -18,6 +18,6 @@ func (l Line) writelog(logText ...string) {
 		if err != nil {
 			fmt.Println("Could not write to logfile Error: ", err)
 		}
-		w.Flush()
 	}
+	w.Flush()
 }
