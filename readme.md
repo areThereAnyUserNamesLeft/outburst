@@ -1,4 +1,4 @@
-![Outburst logo - Lazy logging for golang]: https//:raw.githubusercontent.com/areThereAnyUserNamesLeft/outburst/blob/master/imgs/outburst_slogan.png
+![Outburst logo - Lazy logging for golang]: imgs/outburst_slogan.png
 
 # Outburst
 Simple, light weight, lazy logging which gets out of your way.
@@ -46,7 +46,7 @@ import ob "github.com/areThereAnyUserNamesLeft/outburst"
 Info [2019-03-30]-[15:40:31]- Scooby Doo:Dog -  Age:4
 ```
 > or some nicely colored loglines in the terminal
-![Outburst logo - Lazy logging for golang]: https//:raw.githubusercontent.com/areThereAnyUserNamesLeft/outburst/blob/master/imgs/loglines.png
+![Outburst logo - Lazy logging for golang]: imgs/loglines.png
 Additionally, the output can be colored and have emojis to reflect the error.
 # Configured by a yaml file
 
