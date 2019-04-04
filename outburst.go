@@ -2,67 +2,8 @@ package outburst
 
 import (
 	"fmt"
-	"gopkg.in/yaml.v2"
-	"io/ioutil"
-	"os"
+	"time"
 )
-
-const file = "outburst.yaml"
-
-type confSettings struct {
-	Debug       *bool   `yaml:"debug,omitempty"`
-	DefaultLvl  *Level  `yaml:"default_level"`
-	Vulgar      *bool   `yaml:"vulgar,omitempty"`
-	Emojis      *bool   `yaml:"emojis,omitempty"`
-	EmojiChoice *string `yaml:"emoji_choice,omitempty"`
-	TimeFormat  string  `yaml:"time_format"`
-	Padding     *int    `yaml:"padding,omitempty"`
-	LogFile     string  `yaml:"file",omitempty`
-}
-
-func readSettings() confSettings {
-
-	f, err := os.Open(file)
-
-	if err != nil {
-		fmt.Printf("No %s file found! Please start by saving the %s file in you project directory - (an empty %s file will supress this message and use default behaviour :  - %s\n)", file, file, file, err)
-	}
-
-	s := confSettings{}
-	bytes, err := ioutil.ReadAll(f)
-	if err != nil {
-		fmt.Printf("Cannot read %s file: %s\n", file, err)
-	}
-	err = yaml.Unmarshal(bytes, &s)
-	if err != nil {
-		fmt.Printf("Cannot decode %s into settings struct - please check formatting of %s: %s\n", file, file, err)
-	}
-	False := false
-	if s.Vulgar == nil {
-		s.Vulgar = &False
-	}
-	if s.Debug == nil {
-		s.Debug = &False
-	}
-	if s.DefaultLvl == nil {
-		info := Info
-		s.DefaultLvl = &info
-	}
-	if s.Emojis == nil {
-		s.Emojis = &False
-	}
-	if s.TimeFormat == "" {
-		s.TimeFormat = "[2006-01-02]-[15:04:05]-"
-	}
-	four := 4
-	if s.Padding == nil {
-		s.Padding = &four
-	}
-	if s.LogFile == "" {
-		s.LogFile = "~/logfile.txt"
-	}
-	return s
-}
 
 type outburst struct {
 	Conf confSettings
@@ -83,4 +24,83 @@ func (o outburst) PrintSettings() {
 	fmt.Printf("Vulgarity  = %v \n", o.Conf.Vulgar)
 	fmt.Printf("TimeFormat = %v \n", o.Conf.TimeFormat)
 	fmt.Printf("Padding    = %v \n", o.Conf.Padding)
+}
+
+// Out takes a map of string interface and returns a Line
+func (o outburst) Out(knots map[string]interface{}) Line {
+	lev := *o.Conf.DefaultLvl
+	l := o.createLine(knots, lev)
+	return l
+}
+
+func (o outburst) createLine(k Knot, lv Level) Line {
+	ln := Line{}
+	if !*o.Conf.Emojis {
+		ln = Line{
+			Knots:       k,
+			Time:        time.Now().Format(o.Conf.TimeFormat),
+			Level:       lv,
+			EmojiChoice: *o.Conf.EmojiChoice,
+			Emoji:       "",
+			Color:       colors[lv.String()],
+			File:        o.Conf.LogFile,
+		}
+		return ln
+	}
+	ln = Line{
+		Knots:       k,
+		Time:        time.Now().Format(o.Conf.TimeFormat),
+		Level:       lv,
+		EmojiChoice: *o.Conf.EmojiChoice,
+		Emoji:       emojis[*o.Conf.EmojiChoice][*o.Conf.DefaultLvl],
+		Color:       colors[lv.String()],
+		File:        o.Conf.LogFile,
+	}
+	return ln
+}
+
+func (o outburst) Trace(knots map[string]interface{}) {
+	l := o.createLine(knots, Trace)
+	l.Burst(Trace)
+}
+func (o outburst) Info(knots map[string]interface{}) {
+	l := o.createLine(knots, Info)
+	l.Burst(Info)
+}
+
+func (o outburst) Debug(knots map[string]interface{}) {
+	l := o.createLine(knots, Debug)
+	l.Burst(Debug)
+}
+
+func (o outburst) Warn(knots map[string]interface{}) {
+	l := o.createLine(knots, Warn)
+	l.Burst(Warn)
+}
+
+func (o outburst) Error(knots map[string]interface{}) {
+	l := o.createLine(knots, Error)
+	l.Burst(Error)
+}
+
+func (o outburst) Fatal(knots map[string]interface{}) {
+	l := o.createLine(knots, Fatal)
+	l.Burst(Fatal)
+}
+
+func (o outburst) Panic(knots map[string]interface{}) {
+	l := o.createLine(knots, Panic)
+	l.Burst(Panic)
+}
+
+func (o outburst) ErrCheck(err error, knots ...map[string]interface{}) {
+	if err != nil {
+		o.Error(Knot{"Error": err})
+		if len(knots) > 0 {
+			for _, kn := range knots {
+				o.Error(kn)
+			}
+		}
+
+	}
 }

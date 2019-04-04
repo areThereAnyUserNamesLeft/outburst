@@ -23,5 +23,5 @@ func buildTest(t *testing.T) {
 
 func outTest(t *testing.T) {
 	ob := NewOutBurst()
-	ob.Out(Knots{"Scooby Doo": "Dog", "Age": 4})
+	ob.Out(Knot{"Scooby Doo": "Dog", "Age": 4})
 }
