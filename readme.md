@@ -1,39 +1,57 @@
+![Outburst logo - Lazy logging for golang]: /imgs/outburst_slogan.png
 # Outburst
-Simple, light weight, lazy logging which gets out the way so you can program.
+Simple, light weight, lazy logging which gets out of your way.
 
-install: `go get github.com/areThereAnyUserNamesleft/outburst`
+I'm not looking to replace propper loggers like the impressive [Logrus](https://github.com/sirupsen/logrus) I'd
+recommend you consider it, but I think there is a need to have quick dirty and
+convienient logging - like outburst. Logging which:
+- is easy to set up and configure
+- shorter to use than `fmt.Println()`
+- has shiny colored fonts in the terminal
+- supports emojis if you want them
+- outputs to a file if/when needed
 
-1. Import
+## Start Here
+
+0. Get - as you would any other go package
+
+```bash
+go get github.com/areThereAnyUserNamesleft/outburst
+```
+
+1. Import - consider using `ob` as a convienient alias
 ```go
 import ob "github.com/areThereAnyUserNamesLeft/outburst"
 
 ```
-2. Initiate the logger
+2. Initiate - consider calling it log or whatever
 ```go
 	log := ob.NewOutBurst()
 ```
-3. and go...
+3. Log - see examples
+> Example 1 - Key - Value logging:
 ```go
-	log.Out(ob.Knot{"Scooby Doo": Dog, "Age": 4}).Burst(3)
+	log.Out(ob.Knot{"Scooby Doo": Dog, "Age": 4}).Burst(ob.Info)
+
 	// Or if you want an even shorter version!
+
 	log.Info(ob.KV{"Scooby Doo": Dog, "Age": 4})
+
 	// (Hint - Knot and KV are the same data structure)
 ```
-where you'd normaly have
-```go
-	fmt.Printf("Scooby Doo": %s, Age: %v ", Dog, Age)
-```
-Before you dismiss `outburst` lets see what that line gets you over the fmt
-package?
+
+> Both the above give you some nice output in your logfile
 ```
 Info [2019-03-30]-[15:40:31]- Scooby Doo:Dog -  Age:4
 ```
+> or some nicely colored loglines in the terminal
+![colored loglines]:/imgs/loglines.png
 Additionally, the output can be colored and have emojis to reflect the error.
 # Configured by a yaml file
 
-For the most part this is handled by a yaml file in your projects root - see `outburst.yaml` for an example.
+The default settings are handled by a yaml file in your projects root - see `outburst.yaml` for an example.
 
-Extras convienience functions - 
+Extra convienience functions -
 ### Error Logging
 ```go
 log.ErrCheck(err, ob.KV{"Scooby Doo": Dog, "Age": 4})
@@ -41,11 +59,8 @@ log.ErrCheck(err, ob.KV{"Scooby Doo": Dog, "Age": 4})
 // replaces
 
 if err != nil {
-	fmt.Printf("Scooby Doo": %s, Age: %v ", Dog, Age)
+    log.Error(cb.KV{"Error": err, "Scooby Doo":Dog, "Age": 4})
 }
 
-// If the error not "nil" it will fire off the Error and the Key Value as an Error message. 
-// Also the Knot/KV is an optional parameter so you can include them or not or include multiple. 
+// The Knot/KV is an optional parameter so you can include them or not or include multiple.
 ```
-
-Todo:- Directing all logging above certain level to a file...
