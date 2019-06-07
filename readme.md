@@ -1,5 +1,5 @@
 ![Outburst logo - Lazy logging for golang](imgs/outburst_slogan.png)
-[travisci badge](https://travis-ci.com/areThereAnyUserNamesLeft/outburst.svg?branch=master)
+![travisci badge](https://travis-ci.com/areThereAnyUserNamesLeft/outburst.svg?branch=master)
 # Outburst
 Simple, light weight, lazy logging which gets out of your way.
 
